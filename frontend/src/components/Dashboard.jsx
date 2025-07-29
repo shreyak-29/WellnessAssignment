@@ -12,10 +12,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
-    if (userData) {
+    const token = localStorage.getItem('accessToken');
+    console.log("Dashboard useEffect - userData:", userData);
+    console.log("Dashboard useEffect - token:", token);
+    
+    if (userData && token) {
       setUser(JSON.parse(userData));
       fetchSessions();
     } else {
+      console.log("No user data or token found, redirecting to login");
       navigate('/login');
     }
     setIsLoading(false);
@@ -26,6 +31,15 @@ const Dashboard = () => {
       setIsLoadingSessions(true);
       const token = localStorage.getItem('accessToken');
       console.log("token in dashboard" , token)
+      
+      if (!token) {
+        console.log("No token found, redirecting to login");
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
+        navigate('/login');
+        return;
+      }
+      
       const response = await axios.get('http://localhost:3000/api/sessions', {
         headers: {
           Authorization: `Bearer ${token}`
@@ -34,7 +48,15 @@ const Dashboard = () => {
       setSessions(response.data.data || []);
     } catch (error) {
       console.error('Error fetching sessions:', error);
-      // Show error toast here if we had react-toastify
+      if (error.response?.status === 401) {
+        console.log("Token expired or invalid, redirecting to login");
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken');
+        navigate('/login');
+      } else {
+        // Show error toast here if we had react-toastify
+        console.error('Failed to fetch sessions:', error.message);
+      }
     } finally {
       setIsLoadingSessions(false);
     }
@@ -65,6 +87,33 @@ const Dashboard = () => {
 
   const handleEditSession = (sessionId) => {
     navigate(`/editor/${sessionId}`);
+  };
+
+  const handleDeleteSession = async (sessionId, sessionTitle) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete "${sessionTitle}"? This action cannot be undone.`
+    );
+    
+    if (confirmDelete) {
+      try {
+        const token = localStorage.getItem('accessToken');
+        await axios.delete(`http://localhost:3000/api/sessions/${sessionId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        // Refresh the sessions list
+        fetchSessions();
+      } catch (error) {
+        console.error('Error deleting session:', error);
+        if (error.response?.status === 403) {
+          alert("You don't have permission to delete this session.");
+        } else {
+          alert("Failed to delete session. Please try again.");
+        }
+      }
+    }
   };
 
   const formatDate = (dateString) => {
@@ -145,51 +194,79 @@ const Dashboard = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sessions.map((session) => (
-                  <div key={session._id} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">{session.title}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        session.status === 'published' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {session.status}
-                      </span>
-                    </div>
-                    
-                    {session.tags && session.tags.length > 0 && (
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-2">
-                          {session.tags.map((tag, index) => (
-                            <span key={index} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {sessions.map((session) => (
+    <div
+      key={session._id}
+      className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow"
+    >
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+          {session.title}
+        </h3>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium ${
+            session.status === "published"
+              ? "bg-green-100 text-green-800"
+              : "bg-yellow-100 text-yellow-800"
+          }`}
+        >
+          {session.status}
+        </span>
+      </div>
 
-                    {session.jsonUrl && (
-                      <p className="text-sm text-gray-600 mb-4 truncate">
-                        <span className="font-medium">URL:</span> {session.jsonUrl}
-                      </p>
-                    )}
+      {session.tags && session.tags.length > 0 && (
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-2">
+            {session.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
-                    <div className="text-xs text-gray-500 mb-4">
-                      Last updated: {formatDate(session.updatedAt)}
-                    </div>
+      {session.jsonUrl && (
+        <p className="text-sm text-gray-600 mb-4 truncate">
+          <span className="font-medium">URL:</span> {session.jsonUrl}
+        </p>
+      )}
 
-                    <button
-                      onClick={() => handleEditSession(session._id)}
-                      className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                    >
-                      Edit Session
-                    </button>
-                  </div>
-                ))}
-              </div>
+      <div className="text-xs text-gray-500 mb-4">
+        Last updated: {formatDate(session.updatedAt)}
+      </div>
+
+      <div className="flex gap-2">
+        {session.status === "draft" ? (
+          <button
+            onClick={() => handleEditSession(session._id)}
+            className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          >
+            Edit Session
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate(`/view/${session._id}`)} 
+            className="flex-1 bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+          >
+            View Session
+          </button>
+        )}
+        <button
+          onClick={() => handleDeleteSession(session._id, session.title)}
+          className="bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
             )}
           </div>
 

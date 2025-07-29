@@ -11,11 +11,15 @@ const createSession = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Title is required");
   }
 
+  if (!content) {
+    throw new ApiError(400, "Content is required");
+  }
+
   const session = await Session.create({
     title,
     tags: Array.isArray(tags) ? tags : [],
     jsonUrl,
-    content: content || {},
+    content: content,
     status: status || "draft",
     owner: req.user._id,
     lastAutoSavedAt: new Date()
@@ -47,7 +51,7 @@ const updateSession = asyncHandler(async (req, res) => {
       title,
       tags: Array.isArray(tags) ? tags : [],
       jsonUrl,
-      content: content || {},
+      content: content,
       status,
       lastAutoSavedAt: new Date()
     },

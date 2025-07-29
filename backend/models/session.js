@@ -16,10 +16,12 @@ const sessionSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    content: {
-      type: mongoose.Schema.Types.Mixed,
-      default: {}
-    },
+  content: {
+  type: String,
+  required: [true, "Content is required"],
+  trim: true
+},
+
     status: {
       type: String,
       enum: ["draft", "published"],

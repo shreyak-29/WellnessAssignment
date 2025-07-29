@@ -4,6 +4,9 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import SessionEditor from './components/SessionEditor';
 import ProtectedRoute from './components/ProtectedRoute';
+import ViewSession from './components/ViewSessions';
+import PublishedSessions from './components/PublishedSessions';
+
 import './App.css';
 
 function App() {
@@ -29,7 +32,10 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/view/:id" element={<ViewSession />} />
+          <Route path="/" element={<PublishedSessions />} />
+
+          <Route path="/login" element={<Navigate to="/login" replace />} />
         </Routes>
       </div>
     </Router>
