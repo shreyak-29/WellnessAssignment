@@ -5,12 +5,14 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 // CORS configuration
-app.use(cors({
-    origin: "http://localhost:5173",
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://wellness-assignment.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
-}));
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  })
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -27,13 +29,13 @@ app.use("/api/sessions", sessionRouter);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
-  
+
   res.status(statusCode).json({
     success: false,
     statusCode,
     message,
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack })
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 });
 
-export {app};
+export { app };
