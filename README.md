@@ -7,6 +7,8 @@
 A **MERN stack** application where users can **create, edit, and publish** wellness sessions.
 Published sessions are **publicly accessible**, while drafts remain **private** to the creator.
 
+🔗Deployed Link : https://wellness-assignment.vercel.app/
+
 ---
 
 ## ✨ **Features**
