@@ -78,7 +78,7 @@ const SessionEditor = () => {
       }
 
       const response = await axios.get(
-        `http://localhost:3000/api/sessions/${id}`,
+        `${import.meta.env.VITE_API_URL}sessions/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -157,11 +157,11 @@ const SessionEditor = () => {
       console.log("Sending session data:", sessionData);
 
       if (isNewSession) {
-        await axios.post("http://localhost:3000/api/sessions", sessionData, {
+        await axios.post(`${import.meta.env.VITE_API_URL}sessions`, sessionData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.put(`http://localhost:3000/api/sessions/${id}`, sessionData, {
+        await axios.put(`${import.meta.env.VITE_API_URL}sessions/${id}`, sessionData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -206,12 +206,12 @@ const SessionEditor = () => {
 
       let response;
       if (isNewSession) {
-        response = await axios.post("http://localhost:3000/api/sessions", sessionData, {
+        response = await axios.post(`${import.meta.env.VITE_API_URL}sessions`, sessionData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         navigate(`/editor/${response.data.data._id}`);
       } else {
-        response = await axios.put(`http://localhost:3000/api/sessions/${id}`, sessionData, {
+        response = await axios.put(`${import.meta.env.VITE_API_URL}sessions/${id}`, sessionData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -266,7 +266,7 @@ const SessionEditor = () => {
             return;
           }
 
-          await axios.delete(`http://localhost:3000/api/sessions/${id}`, {
+          await axios.delete(`${import.meta.env.VITE_API_URL}sessions/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
 

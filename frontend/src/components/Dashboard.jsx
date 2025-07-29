@@ -40,7 +40,7 @@ const Dashboard = () => {
         return;
       }
       
-      const response = await axios.get('http://localhost:3000/api/sessions', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}sessions`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -64,7 +64,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:3000/api/v1/auth/logout', {
+      await axios.get(`${import.meta.env.VITE_API_URL}v1/auth/logout`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -97,7 +97,7 @@ const Dashboard = () => {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('accessToken');
-        await axios.delete(`http://localhost:3000/api/sessions/${sessionId}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}sessions/${sessionId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -48,7 +48,7 @@ const Signup = () => {
         password: formData.password
       };
 
-      const response = await axios.post('http://localhost:3000/api/v1/auth/register', signupData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}v1/auth/register`, signupData);
 
       console.log('Registration successful:', response.data);
       // You can store user data in localStorage or context here

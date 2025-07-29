@@ -8,9 +8,11 @@ import ViewSession from './components/ViewSessions';
 import PublishedSessions from './components/PublishedSessions';
 
 import './App.css';
+// console.log("API URL:", import.meta.env.VITE_API_URL);
 
 function App() {
   return (
+    
     <Router>
       <div className="App">
         <Routes>

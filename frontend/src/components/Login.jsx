@@ -36,7 +36,7 @@ const Login = () => {
         loginData.username = formData.username;
       }
 
-      const response = await axios.post('http://localhost:3000/api/v1/auth/login', loginData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}v1/auth/login`, loginData);
 
       console.log('Login successful:', response.data);
       // You can store user data in localStorage or context here

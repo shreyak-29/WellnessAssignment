@@ -9,7 +9,7 @@ const Navigation = ({ currentPage }) => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      await fetch('http://localhost:3000/api/v1/auth/logout', {
+      await fetch(`${import.meta.env.VITE_API_URL}v1/auth/logout`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`

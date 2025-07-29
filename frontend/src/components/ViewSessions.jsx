@@ -15,7 +15,9 @@ const ViewSession = () => {
       try {
         setIsLoading(true);
         // No Authorization header needed
-        const response = await axios.get(`http://localhost:3000/api/sessions/${id}`);
+        // console.log("Fetching:", `${import.meta.env.VITE_API_URL}sessions/published`);
+
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}sessions/${id}`);
         setSession(response.data.data);
       } catch (err) {
         console.error("Error fetching session:", err);
