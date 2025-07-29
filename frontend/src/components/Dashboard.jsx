@@ -71,7 +71,7 @@ const Dashboard = () => {
       });
       localStorage.removeItem('user');
       localStorage.removeItem('accessToken');
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.error('Logout error:', error);
       // Even if logout fails, clear local storage and redirect
