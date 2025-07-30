@@ -21,7 +21,7 @@ Published sessions are **publicly accessible**, while drafts remain **private** 
 * 📝 **Session content is automatically saved:**  
   ⏱️ After **5 seconds** of user inactivity, and  
   🔁 Every **30 seconds**, regardless of activity (as a backup)  
-  ✅ This ensures users don’t lose progress while editing sessions.
+* ✅ **This ensures users don’t lose progress while editing sessions**
 
 
 
