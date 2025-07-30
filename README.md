@@ -15,10 +15,10 @@ Published sessions are **publicly accessible**, while drafts remain **private** 
 
 
 
-🔐 User authentication (JWT-based)
-📝 Create, edit, and delete sessions
-💾 Save sessions as drafts or publish them
-🌍 View all published sessions without login
+🔐 User authentication (JWT-based)**
+📝 Create, edit, and delete sessions**
+💾 Save sessions as drafts or publish them**
+🌍 View all published sessions without login**
 📊 User dashboard to manage drafts and published sessions**
 📝 **Session content is automatically saved:**  
 ⏱️ After **5 seconds** of user inactivity, and  
