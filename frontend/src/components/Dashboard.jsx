@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navigation from './Navigation';
+import { BACKGROUND_PATTERNS, COMMON_STYLES } from '../constants/styles';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,9 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSessions, setIsLoadingSessions] = useState(false);
   const navigate = useNavigate();
+
+  // Get the checkered pattern style
+  const patternStyle = BACKGROUND_PATTERNS.checkered(false); // false for light theme
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -143,10 +147,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100">
+    <div className="min-h-screen" style={patternStyle}>
       <Navigation currentPage="dashboard" />
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className={COMMON_STYLES.card}>
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -156,7 +160,7 @@ const Dashboard = () => {
             <div className="flex gap-4">
               <button
                 onClick={handleCreateNewSession}
-                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                className={COMMON_STYLES.primaryButton}
               >
                 + Create New Session
               </button>

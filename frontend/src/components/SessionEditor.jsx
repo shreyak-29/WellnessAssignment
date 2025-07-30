@@ -2,11 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Navigation from "./Navigation";
+import { BACKGROUND_PATTERNS } from "../constants/styles";
 
 const SessionEditor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isNewSession = id === "new";
+
+  // Get the checkered pattern style
+  const patternStyle = BACKGROUND_PATTERNS.checkered(false);
 
   const [session, setSession] = useState({
     title: "",
@@ -300,7 +304,7 @@ const SessionEditor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100">
+    <div className="min-h-screen" style={patternStyle}>
       <Navigation currentPage="editor" />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl shadow-xl p-8">

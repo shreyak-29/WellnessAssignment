@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navigation from "./Navigation";
+import { BACKGROUND_PATTERNS } from "../constants/styles";
 
 const PublishedSessions = () => {
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // Get the checkered pattern style
+  const patternStyle = BACKGROUND_PATTERNS.checkered(false);
 
   useEffect(() => {
     const fetchPublishedSessions = async () => {
@@ -43,7 +47,7 @@ const PublishedSessions = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100">
+    <div className="min-h-screen" style={patternStyle}>
       <Navigation currentPage="published" />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Published Sessions</h1>
