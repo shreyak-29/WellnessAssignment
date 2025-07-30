@@ -6,7 +6,7 @@
 
 A **MERN stack** application where users can **create, edit, and publish** wellness sessions.
 Published sessions are **publicly accessible**, while drafts remain **private** to the creator.
-Session content is automatically saved after 5 seconds of inactivity or every 30 seconds, ensuring no progress is lost during editing.
+Session content is **automatically saved** after 5 seconds of inactivity or every 30 seconds, ensuring no progress is lost during editing.
 
 🔗Deployed Link : https://wellness-assignment.vercel.app/
 
